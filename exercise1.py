@@ -1,4 +1,4 @@
-from random import randint
+from random import sample
 import sys
 
 
@@ -8,17 +8,9 @@ CEND = '\033[0m'
 
 
 def generate_number():
-    # awful implementation
-    a = randint(0, 9)
-    b = randint(0, 9)
-    c = randint(0, 9)
-    d = randint(0, 9)
-    while a == b or a == c or a == d or b == c or b == d or c == d:
-        a = randint(0, 9)
-        b = randint(0, 9)
-        c = randint(0, 9)
-        d = randint(0, 9)
-    return a, b, c, d
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    reference_number = sample(numbers, 4)
+    return reference_number
 
 
 class NumberGame:
@@ -36,7 +28,8 @@ class NumberGame:
             print(CGREEN, 'Great! You win!', CEND)
             sys.exit()
         regular -= good
-        print('You got {} good and {} regular. Try again.'.format(good, regular))
+        print('You got {} good and {} regular. Try again.'.format(
+            good, regular))
         self.play()
 
 
