@@ -1,5 +1,5 @@
 import unittest
-from exercise1 import Guess
+from exercise1 import Guess, SIZE
 
 
 class GuessTest(unittest.TestCase):
@@ -16,14 +16,14 @@ class GuessTest(unittest.TestCase):
         self.assertFalse(guess1.validate_guess())
         self.assertFalse(guess2.validate_guess())
 
-    def test_check_guess_with_same_numbers_returns_four_good(self):
+    def test_check_guess_with_same_numbers_returns_size_value_as_good(self):
         TEST_NUMBER = '1234'
         guess = Guess(TEST_NUMBER)
         result = guess.check_guess(TEST_NUMBER)
-        self.assertEqual(result['good'], 4)
+        self.assertEqual(result['good'], SIZE)
 
-    def test_check_guess_with_different_numbers_does_not_return_four_good(self):
+    def test_check_guess_with_different_numbers_does_not_return_size_value_as_good(self):
         number = '1234'
         guess = Guess('1235')
         result = guess.check_guess(number)
-        self.assertNotEqual(result['good'], 4)
+        self.assertNotEqual(result['good'], SIZE)

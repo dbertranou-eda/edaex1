@@ -5,11 +5,12 @@ import sys
 CRED = '\033[91m'
 CGREEN = '\33[32m'
 CEND = '\033[0m'
+DIGITS = '0123456789'
+SIZE = 4
 
 
 def generate_number():
-    numbers = '0123456789'
-    reference_number = ''.join(sample(numbers, 4))
+    reference_number = ''.join(sample(DIGITS, SIZE))
     return reference_number
 
 
@@ -18,13 +19,15 @@ class NumberGame:
         self.reference_number = reference_number
 
     def play(self):
-        guess_number = input('Enter a 4 digit number --> ')
+        guess_number = input('Enter a {} digit number --> '.format(SIZE))
         guess = Guess(guess_number)
         while not guess.validate_guess():
-            print(CRED, 'You did not put a 4 digit number. Try again.', CEND)
-            guess.guess_number = input('Enter a 4 digit number --> ')
+            print(CRED, 'You did not put a {} digit number. Try again.'.format(
+                SIZE), CEND)
+            guess.guess_number = input('Enter a {} digit number --> '.format(
+                SIZE))
         result = guess.check_guess(self.reference_number)
-        if result['good'] == 4:
+        if result['good'] == SIZE:
             print(CGREEN, 'Great! You win!', CEND)
             sys.exit()
         print('You got {} good and {} regular. Try again.'.format(
@@ -41,7 +44,7 @@ class Guess:
             int(self.guess_number)
         except ValueError:
                 return False
-        if len(self.guess_number) != 4:
+        if len(self.guess_number) != SIZE:
             return False
         return True
 
