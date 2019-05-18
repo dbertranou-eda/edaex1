@@ -21,6 +21,7 @@ class NumberGame:
         guess_number = input('Enter a 4 digit number --> ')
         guess = Guess(guess_number)
         while not guess.validate_guess():
+            print(CRED, 'You did not put a 4 digit number. Try again.', CEND)
             guess.guess_number = input('Enter a 4 digit number --> ')
         good = guess.check_good(self.reference_number)
         regular = guess.check_regular(self.reference_number)
@@ -38,8 +39,11 @@ class Guess:
         self.guess_number = guess_number
 
     def validate_guess(self):
+        try:
+            int(self.guess_number)
+        except ValueError:
+                return False
         if len(self.guess_number) != 4:
-            print(CRED, 'You did not put a 4 digit number. Try again.', CEND)
             return False
         return True
 
