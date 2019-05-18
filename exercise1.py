@@ -23,14 +23,12 @@ class NumberGame:
         while not guess.validate_guess():
             print(CRED, 'You did not put a 4 digit number. Try again.', CEND)
             guess.guess_number = input('Enter a 4 digit number --> ')
-        good = guess.check_good(self.reference_number)
-        regular = guess.check_regular(self.reference_number)
-        if good == 4:
+        result = guess.check_guess(self.reference_number)
+        if result['good'] == 4:
             print(CGREEN, 'Great! You win!', CEND)
             sys.exit()
-        regular -= good
         print('You got {} good and {} regular. Try again.'.format(
-            good, regular))
+            result['good'], result['regular']))
         self.play()
 
 
@@ -47,22 +45,14 @@ class Guess:
             return False
         return True
 
-    def check_good(self, reference_number):
-        good = 0
-        for n, g in zip(reference_number, self.guess_number):
-            if n == g:
-                good += 1
-                # if good == 4:
-                #     break
-        return good
-
-    def check_regular(self, reference_number):
-        regular = 0
-        for n in reference_number:
-            for g in self.guess_number:
-                if n == g:
-                    regular += 1
-        return regular
+    def check_guess(self, reference_number):
+        result = {'good': 0, 'regular': 0}
+        for g, n in zip(self.guess_number, reference_number):
+            if g == n:
+                result['good'] += 1
+            elif g in reference_number:
+                result['regular'] += 1
+        return result
 
 
 if __name__ == '__main__':
