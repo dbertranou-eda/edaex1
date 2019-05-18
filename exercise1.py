@@ -8,8 +8,8 @@ CEND = '\033[0m'
 
 
 def generate_number():
-    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    reference_number = sample(numbers, 4)
+    numbers = '0123456789'
+    reference_number = ''.join(sample(numbers, 4))
     return reference_number
 
 
@@ -67,7 +67,6 @@ class Guess:
 
 if __name__ == '__main__':
     reference_number = generate_number()
-    reference_number = '{}{}{}{}'.format(*reference_number)
     number_game = NumberGame(reference_number)
     # print(reference_number)
     number_game.play()
