@@ -86,6 +86,11 @@ class ThinkerGame(Game):
     def __init__(self, choices):
         self.choices = choices
 
+    def validate_result(self, result):
+        if result['good'] + result['regular'] > 4:
+            return False
+        return True
+
     def play_thinker(self):
         answers = []
         results = []
@@ -96,6 +101,10 @@ class ThinkerGame(Game):
             print(''.join(ans))
             result['good'] = int(Game.valid_input('How many good?--> '))
             result['regular'] = int(Game.valid_input('How many regular?--> '))
+            while not self.validate_result(result):
+                cprint('Oops! Those scores seem incongruent. Try again.', 'red')
+                result['good'] = int(Game.valid_input('How many good?--> '))
+                result['regular'] = int(Game.valid_input('How many regular?--> '))
             results.append(dict(result))
             if result['good'] == SIZE:
                 cprint('Great! I won!', 'green')
@@ -106,7 +115,7 @@ class ThinkerGame(Game):
                     new_choices.append(c)
             self.choices = new_choices
             if not self.choices:
-                cprint('Are you sure? Nothing fits those scores you gave:', 'white')
+                cprint('Game over! Nothing fits those scores you gave:', 'white')
                 for a, r in zip(answers, results):
                     cprint(' {} -> Good: {}, Regular: {}'.format(
                         ''.join(a), r['good'], r['regular']), 'white')
