@@ -1,11 +1,9 @@
+import sys
 from random import sample, shuffle
 from itertools import permutations
-import sys
+from termcolor import cprint
 
 
-CRED = '\033[91m'
-CGREEN = '\33[32m'
-CEND = '\033[0m'
 DIGITS = '0123456789'
 SIZE = 4
 
@@ -31,7 +29,7 @@ class Game:
                 int(value)
                 return value
             except ValueError:
-                print('Sorry, that is not a valid input. Try again.')
+                cprint('Sorry, that is not a valid input. Try again.', 'red')
                 continue
 
     def validate_game(self):
@@ -72,12 +70,12 @@ class GuesserGame(Game):
     def play_guesser(self):
         guess_number = Game.valid_input('Enter a {} digit number --> '.format(SIZE))
         while not self.validate_guess(guess_number):
-            print(CRED, 'You did not put a {} digit number. Try again.'.format(
-                SIZE), CEND)
+            cprint('You did not put a {} digit number. Try again.'.format(
+                SIZE), 'red')
             guess_number = Game.valid_input('Enter a {} digit number --> '.format(SIZE))
         result = self.check_numbers(guess_number, self.secret_number)
         if result['good'] == SIZE:
-            print(CGREEN, 'Great! You won!', CEND)
+            cprint('Great! You won!', 'green')
             sys.exit()
         print('You got {} good and {} regular. Try again.'.format(
             result['good'], result['regular']))
@@ -98,9 +96,9 @@ class ThinkerGame(Game):
             print(''.join(ans))
             result['good'] = int(Game.valid_input('How many good?--> '))
             result['regular'] = int(Game.valid_input('How many regular?--> '))
-            results.append(result)
+            results.append(dict(result))
             if result['good'] == SIZE:
-                print(CGREEN, 'Great! I won!', CEND)
+                cprint('Great! I won!', 'green')
                 sys.exit()
             new_choices = []
             for c in self.choices:
@@ -108,19 +106,19 @@ class ThinkerGame(Game):
                     new_choices.append(c)
             self.choices = new_choices
             if not self.choices:
-                print ('Are you sure? Nothing fits those scores you gave:')
+                cprint('Are you sure? Nothing fits those scores you gave:', 'white')
                 for a, r in zip(answers, results):
-                    print(' {} -> Good: {}, Regular: {}'.format(
-                        ''.join(a), r['good'], r['regular']))
+                    cprint(' {} -> Good: {}, Regular: {}'.format(
+                        ''.join(a), r['good'], r['regular']), 'white')
                 sys.exit()
 
 
 if __name__ == '__main__':
-    print('Welcome to the Guessing Game!\
-        \nWho you want to be? A Guesser(1) or a Thinker(2).')
+    cprint('Welcome to the Guessing Game!\
+        \nWho you want to be? A Guesser(1) or a Thinker(2).', 'magenta')
     game_type = Game.valid_input('Enter 1 or 2 to select the mode --> ')
     game = Game(game_type)
     while not game.validate_game():
-        print('We do not have that kind of game, sorry.')
+        cprint('We do not have that kind of game, sorry.', 'red')
         game.game_type = Game.valid_input('Enter 1 or 2 to select the mode --> ')
     game.play()
