@@ -23,16 +23,18 @@ class Game:
         shuffle(choices)
         return choices
 
-    def validate_input(self, some_input):
-        try:
-            int(some_input)
-        except ValueError:
-                return False
-        return True
+    @staticmethod
+    def valid_input(prompt):
+        while True:
+            value = input(prompt)
+            try:
+                int(value)
+                return value
+            except ValueError:
+                print('Sorry, that is not a valid input. Try again.')
+                continue
 
     def validate_game(self):
-        if not self.validate_input(self.game_type):
-            return False
         self.game_type = int(self.game_type)
         if self.game_type != 1 and self.game_type != 2:
             return False
@@ -63,18 +65,16 @@ class GuesserGame(Game):
         self.secret_number = secret_number
 
     def validate_guess(self, guess_number):
-        if not self.validate_input(guess_number):
-            return False
         if len(guess_number) != SIZE:
             return False
         return True
 
     def play_guesser(self):
-        guess_number = input('Enter a {} digit number --> '.format(SIZE))
+        guess_number = Game.valid_input('Enter a {} digit number --> '.format(SIZE))
         while not self.validate_guess(guess_number):
             print(CRED, 'You did not put a {} digit number. Try again.'.format(
                 SIZE), CEND)
-            guess_number = input('Enter a {} digit number --> '.format(SIZE))
+            guess_number = Game.valid_input('Enter a {} digit number --> '.format(SIZE))
         result = self.check_numbers(guess_number, self.secret_number)
         if result['good'] == SIZE:
             print(CGREEN, 'Great! You won!', CEND)
@@ -96,8 +96,8 @@ class ThinkerGame(Game):
             ans = self.choices[0]
             answers.append(ans)
             print(''.join(ans))
-            result['good'] = int(input('How many good?--> '))
-            result['regular'] = int(input('How many regular?--> '))
+            result['good'] = int(Game.valid_input('How many good?--> '))
+            result['regular'] = int(Game.valid_input('How many regular?--> '))
             results.append(result)
             if result['good'] == SIZE:
                 print(CGREEN, 'Great! I won!', CEND)
@@ -115,13 +115,12 @@ class ThinkerGame(Game):
                 sys.exit()
 
 
-
 if __name__ == '__main__':
     print('Welcome to the Guessing Game!\
         \nWho you want to be? A Guesser(1) or a Thinker(2).')
-    game_type = input('Enter 1 or 2 to select the mode --> ')
+    game_type = Game.valid_input('Enter 1 or 2 to select the mode --> ')
     game = Game(game_type)
     while not game.validate_game():
         print('We do not have that kind of game, sorry.')
-        game.game_type = input('Enter 1 or 2 to select the mode --> ')
+        game.game_type = Game.valid_input('Enter 1 or 2 to select the mode --> ')
     game.play()
