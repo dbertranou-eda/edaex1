@@ -11,3 +11,5 @@ class Factory():
         elif game_type == 2:
             game = ThinkerGame()
             return game
+        else:
+            raise ValueError('Game type does not exist.')

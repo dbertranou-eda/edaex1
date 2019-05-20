@@ -17,6 +17,7 @@ class ThinkerGame(Game):
 
     def validate_result(self, result):
         if result['good'] + result['regular'] > 4:
+            cprint('Are you sure? Those scores seem incongruent. Try again.', 'red')
             return False
         return True
 
@@ -36,18 +37,19 @@ class ThinkerGame(Game):
             sys.exit()
 
     def play(self):
+        guess = 1
         answers = []
         results = []
         result = {}
         self.choices = self.generate_choices()
         while True:
             ans = self.choices[0]
-            print(''.join(ans))
+            print('\nGuess {} is {}'. format(guess, ''.join(ans)))
             result['good'] = int(Game.valid_input('How many good?--> '))
             result['regular'] = int(Game.valid_input('How many regular?--> '))
             if not self.validate_result(result):
-                cprint('Oops! Those scores seem incongruent. Try again.', 'red')
                 continue
+            guess += 1
             answers.append(ans)
             results.append(dict(result))
             self.is_over(result)

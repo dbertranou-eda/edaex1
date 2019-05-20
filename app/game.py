@@ -6,6 +6,7 @@ from .const import SIZE
 class Game:
     @staticmethod
     def valid_input(prompt):
+        # TODO: improve the implementation
         while True:
             value = input(prompt)
             try:
@@ -29,5 +30,5 @@ class Game:
 
     def is_over(self, result):
         if result['good'] == SIZE:
-            cprint('Excellent!', 'green')
+            cprint('Excellent!\n', 'green')
             sys.exit()
