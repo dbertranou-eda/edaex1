@@ -1,4 +1,3 @@
-import sys
 from random import shuffle
 from itertools import permutations
 from termcolor import cprint
@@ -54,7 +53,7 @@ class ThinkerGame(Game):
             answers.append(ans)
             results.append(dict(result))
             if self.is_over(result):
-                sys.exit()
+                break
             self.choices = self.readjust_choices(result)
             if not self.check_choices(answers, results):
-                sys.exit()
+                break

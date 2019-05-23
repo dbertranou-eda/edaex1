@@ -1,4 +1,3 @@
-import sys
 from termcolor import cprint
 from random import sample
 from app.const import DIGITS, SIZE
@@ -29,6 +28,6 @@ class GuesserGame(Game):
             guess += 1
             result = self.check_numbers(guess_number, self.secret_number)
             if self.is_over(result):
-                sys.exit()
+                break
             print('You got {} good and {} regular. Try again.'.format(
                 result['good'], result['regular']))
