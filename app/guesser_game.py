@@ -6,7 +6,7 @@ from .game import Game
 
 class GuesserGame(Game):
     def __init__(self):
-        self.secret_number = None
+        self.secret_number = self.generate_secret()
 
     def generate_secret(self):
         secret_number = ''.join(sample(DIGITS, SIZE))
@@ -20,7 +20,6 @@ class GuesserGame(Game):
 
     def play(self):
         guess = 1
-        self.secret_number = self.generate_secret()
         while True:
             guess_number = Game.valid_input('\nGuess {}: Enter a {}-digit number --> '.format(guess, SIZE))
             if not self.validate_guess(guess_number):

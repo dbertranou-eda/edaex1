@@ -7,7 +7,7 @@ from .game import Game
 
 class ThinkerGame(Game):
     def __init__(self):
-        self.choices = None
+        self.choices = self.generate_choices()
 
     def generate_choices(self):
         choices = list(permutations(DIGITS, SIZE))
@@ -41,7 +41,6 @@ class ThinkerGame(Game):
         answers = []
         results = []
         result = {}
-        self.choices = self.generate_choices()
         while True:
             ans = self.choices[0]
             print('\nGuess {} is {}'. format(guess, ''.join(ans)))
