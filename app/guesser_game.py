@@ -1,4 +1,3 @@
-from termcolor import cprint
 from random import sample
 from app.const import DIGITS, SIZE
 from .game import Game
@@ -14,7 +13,7 @@ class GuesserGame(Game):
 
     def validate_guess(self, guess_number):
         if len(guess_number) != SIZE or len(set(guess_number)) != SIZE:
-            cprint('You did not put a number with {} unique digits. Try again.'.format(SIZE), 'red')
+            print('You did not put a number with {} unique digits. Try again.'.format(SIZE))
             return False
         return True
 

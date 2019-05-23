@@ -1,6 +1,5 @@
 from random import shuffle
 from itertools import permutations
-from termcolor import cprint
 from app.const import DIGITS, SIZE
 from .game import Game
 
@@ -16,7 +15,7 @@ class ThinkerGame(Game):
 
     def validate_result(self, result):
         if result['good'] + result['regular'] > SIZE:
-            cprint('Are you sure? Those scores seem incongruent. Try again.', 'red')
+            print('Are you sure? Those scores seem incongruent. Try again')
             return False
         return True
 
@@ -29,10 +28,10 @@ class ThinkerGame(Game):
 
     def check_choices(self, answers, results):
         if not self.choices:
-            cprint('Game over! Nothing fits those scores you gave:', 'white')
+            print('Game over! Nothing fits those scores you gave:')
             for a, r in zip(answers, results):
-                cprint(' {} -> Good: {}, Regular: {}'.format(
-                    ''.join(a), r['good'], r['regular']), 'white')
+                print(' {} -> Good: {}, Regular: {}'.format(
+                    ''.join(a), r['good'], r['regular']))
             return False
         return True
 
