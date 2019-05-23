@@ -16,17 +16,17 @@ class ThinkerGame(Game):
         return choices
 
     def validate_result(self, result):
-        if result['good'] + result['regular'] > 4:
+        if result['good'] + result['regular'] > SIZE:
             cprint('Are you sure? Those scores seem incongruent. Try again.', 'red')
             return False
         return True
 
-    def set_choices(self, result):
+    def readjust_choices(self, result):
         new_choices = []
         for c in self.choices:
             if self.check_numbers(c, self.choices[0]) == result:
                 new_choices.append(c)
-        self.choices = new_choices
+        return new_choices
 
     def check_choices(self, answers, results):
         if not self.choices:
@@ -53,5 +53,5 @@ class ThinkerGame(Game):
             answers.append(ans)
             results.append(dict(result))
             self.is_over(result)
-            self.set_choices(result)
+            self.choices = self.readjust_choices(result)
             self.check_choices(answers, results)

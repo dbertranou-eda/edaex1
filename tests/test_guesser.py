@@ -1,5 +1,6 @@
 from unittest import TestCase
 from app.guesser_game import GuesserGame
+from app.const import SIZE
 
 
 class GuesserGameTest(TestCase):
@@ -14,3 +15,12 @@ class GuesserGameTest(TestCase):
         game = GuesserGame()
         for value in test_values:
             self.assertFalse(game.validate_guess(value))
+
+    def test_generate_secret(self):
+        game = GuesserGame()
+        check = False
+        for i in range(0, 10):
+            secret_number = game.generate_secret()
+            if len(secret_number) == SIZE and len(set(secret_number)) == SIZE:
+                check = True
+            self.assertTrue(check)
