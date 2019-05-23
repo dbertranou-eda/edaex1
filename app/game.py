@@ -1,4 +1,3 @@
-import sys
 from termcolor import cprint
 from .const import SIZE
 
@@ -31,4 +30,5 @@ class Game:
     def is_over(self, result):
         if result['good'] == SIZE:
             cprint('Excellent!\n', 'green')
-            sys.exit()
+            return True
+        return False

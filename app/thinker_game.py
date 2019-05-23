@@ -34,7 +34,8 @@ class ThinkerGame(Game):
             for a, r in zip(answers, results):
                 cprint(' {} -> Good: {}, Regular: {}'.format(
                     ''.join(a), r['good'], r['regular']), 'white')
-            sys.exit()
+            return False
+        return True
 
     def play(self):
         guess = 1
@@ -52,6 +53,8 @@ class ThinkerGame(Game):
             guess += 1
             answers.append(ans)
             results.append(dict(result))
-            self.is_over(result)
+            if self.is_over(result):
+                sys.exit()
             self.choices = self.readjust_choices(result)
-            self.check_choices(answers, results)
+            if not self.check_choices(answers, results):
+                sys.exit()
