@@ -13,14 +13,16 @@ class GuesserGame(Game):
 
     def validate_guess(self, guess_number):
         if len(guess_number) != SIZE or len(set(guess_number)) != SIZE:
-            print('You did not put a number with {} unique digits. Try again.'.format(SIZE))
+            print('You did not put a number with {} unique digits.'.format(
+                SIZE), 'Try again.')
             return False
         return True
 
     def play(self):
         guess = 1
         while True:
-            guess_number = Game.valid_input('\nGuess {}: Enter a {}-digit number --> '.format(guess, SIZE))
+            guess_number = Game.valid_input(
+                '\nGuess {}: Enter a {}-digit number --> '.format(guess, SIZE))
             if not self.validate_guess(guess_number):
                 continue
             guess += 1

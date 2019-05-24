@@ -4,7 +4,6 @@ from .const import SIZE
 class Game:
     @staticmethod
     def valid_input(prompt):
-        # TODO: improve the implementation
         while True:
             value = input(prompt)
             try:
