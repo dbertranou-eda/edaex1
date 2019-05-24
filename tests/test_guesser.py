@@ -1,4 +1,6 @@
+from io import StringIO
 from unittest import TestCase
+from unittest.mock import patch
 from app.guesser_game import GuesserGame
 from app.const import SIZE
 
@@ -17,10 +19,16 @@ class GuesserGameTest(TestCase):
             self.assertFalse(game.validate_guess(value))
 
     def test_generate_secret(self):
-        game = GuesserGame()
-        check = False
         for i in range(0, 10):
-            secret_number = game.generate_secret()
-            if len(secret_number) == SIZE and len(set(secret_number)) == SIZE:
+            check = False
+            game = GuesserGame()
+            if len(game.secret_number) == SIZE and len(set(game.secret_number)) == SIZE:
                 check = True
             self.assertTrue(check)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_guesser_game_play_with_valid_input(self, mock_stdout):
+        game = GuesserGame()
+        with patch('builtins.input', return_value=game.secret_number):
+            game.play()
+        self.assertEqual(mock_stdout.getvalue(), 'Excellent!\n\n')
