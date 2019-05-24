@@ -1,7 +1,6 @@
-from io import StringIO
 from unittest import TestCase
-from unittest.mock import patch
-from random import randint
+from unittest.mock import patch, call
+from random import randint, seed
 from app.thinker_game import ThinkerGame
 from app.const import SIZE
 
@@ -47,11 +46,43 @@ class ThinkerGameTest(TestCase):
             game.choices = game.readjust_choices(r)
         self.assertFalse(game.check_choices(answers, results))
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_thinker_game_play_with_valid_input(self, mock_stdout):
+    @patch('builtins.print')
+    def test_thinker_game_play_with_perfect_guess(self, mocked_print):
         game = ThinkerGame()
-        user_input = ['4', '0']
-        with patch('builtins.input', side_effect=user_input):
+        USER_INPUT = ['4', '0']
+        with patch('builtins.input', side_effect=USER_INPUT):
             game.play()
-        # TODO: improve assert
-        self.assertEqual(mock_stdout.getvalue()[-12:], 'Excellent!\n\n')
+        mocked_print.assert_called_with('Excellent!\n')
+
+    @patch('builtins.print')
+    def test_thinker_game_play_with_valid_input(self, mocked_print):
+        seed(1)
+        game = ThinkerGame()
+        USER_INPUT = ['0', '2', '0', '1', '0', '3', '2', '1', '4', '0']
+        MOCK_PRINTS = [
+            call('\nGuess 1 is 2915'),
+            call('\nGuess 2 is 5389'),
+            call('\nGuess 3 is 1234'),
+            call('\nGuess 4 is 3126'),
+            call('\nGuess 5 is 0123'),
+            call('Excellent!\n'),
+        ]
+        with patch('builtins.input', side_effect=USER_INPUT):
+            game.play()
+        mocked_print.assert_has_calls(MOCK_PRINTS)
+
+    @patch('builtins.print')
+    def test_thinker_game_play_with_invalid_input(self, mocked_print):
+        seed(1)
+        game = ThinkerGame()
+        USER_INPUT = ['0', '0', '0', '0']
+        MOCK_PRINTS = [
+            call('\nGuess 1 is 2915'),
+            call('\nGuess 2 is 3074'),
+            call('Game over! Nothing fits those scores you gave:'),
+            call(' 2915 -> Good: 0, Regular: 0'),
+            call(' 3074 -> Good: 0, Regular: 0'),
+        ]
+        with patch('builtins.input', side_effect=USER_INPUT):
+            game.play()
+        mocked_print.assert_has_calls(MOCK_PRINTS)

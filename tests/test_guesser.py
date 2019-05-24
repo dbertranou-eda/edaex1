@@ -1,6 +1,6 @@
-from io import StringIO
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, call
+from random import seed
 from app.guesser_game import GuesserGame
 from app.const import SIZE
 
@@ -26,9 +26,26 @@ class GuesserGameTest(TestCase):
                 check = True
             self.assertTrue(check)
 
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_guesser_game_play_with_valid_input(self, mock_stdout):
+    @patch('builtins.print')
+    def test_guesser_game_play_with_perfect_guess(self, mocked_print):
         game = GuesserGame()
         with patch('builtins.input', return_value=game.secret_number):
             game.play()
-        self.assertEqual(mock_stdout.getvalue(), 'Excellent!\n\n')
+        mocked_print.assert_called_with('Excellent!\n')
+
+    @patch('builtins.print')
+    def test_guesser_game_play_with_valid_input(self, mocked_print):
+        seed(1)
+        game = GuesserGame()
+        USER_INPUT = ['1234', '2345', '2315', '2145', '2148', '2140']
+        MOCK_PRINTS = [
+            call('You got 0 good and 3 regular. Try again.'),
+            call('You got 2 good and 0 regular. Try again.'),
+            call('You got 1 good and 1 regular. Try again.'),
+            call('You got 3 good and 0 regular. Try again.'),
+            call('You got 3 good and 0 regular. Try again.'),
+            call('Excellent!\n'),
+        ]
+        with patch('builtins.input', side_effect=USER_INPUT):
+            game.play()
+        mocked_print.assert_has_calls(MOCK_PRINTS)
