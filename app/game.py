@@ -16,9 +16,9 @@ class Game:
             else:
                 print('Sorry, that is not a valid input. Try again.')
 
-    def check_numbers(self, guess_number, secret_number):
+    def check_numbers(self, guess, secret_number):
         result = {'good': 0, 'regular': 0}
-        for g, n in zip(guess_number, secret_number):
+        for g, n in zip(guess, secret_number):
             if g == n:
                 result['good'] += 1
             elif g in secret_number:

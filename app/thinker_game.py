@@ -36,18 +36,17 @@ class ThinkerGame(Game):
         return True
 
     def play(self):
-        guess = 1
+        attemps = 1
         answers = []
         results = []
         result = {}
         while True:
             ans = self.choices[0]
-            print('\nGuess {} is {}'. format(guess, ''.join(ans)))
+            print('\nGuess {} is {}'. format(attemps, ''.join(ans)))
             result['good'] = int(Game.valid_input('How many good?--> '))
             result['regular'] = int(Game.valid_input('How many regular?--> '))
             if not self.validate_result(result):
                 continue
-            guess += 1
             answers.append(ans)
             results.append(dict(result))
             if self.is_over(result):
@@ -55,3 +54,4 @@ class ThinkerGame(Game):
             self.choices = self.readjust_choices(result)
             if not self.check_choices(answers, results):
                 break
+            attemps += 1
